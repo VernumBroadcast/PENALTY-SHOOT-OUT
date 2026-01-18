@@ -21,6 +21,17 @@ document.addEventListener('DOMContentLoaded', function() {
     const resultOverlay = document.getElementById('resultOverlay');
     const resultText = document.getElementById('resultText');
 
+    // Preload keeper images for better performance
+    const keeperImages = [
+        'KEEPER NORMAL.png',
+        'KEEPER save high.png',
+        'KEEPER Save Low.png'
+    ];
+    keeperImages.forEach(src => {
+        const img = new Image();
+        img.src = src;
+    });
+
     // Add click listeners to goal zones
     goalZones.forEach(zone => {
         zone.addEventListener('click', function() {
@@ -29,6 +40,24 @@ document.addEventListener('DOMContentLoaded', function() {
             const zoneType = this.getAttribute('data-zone');
             takeShot(zoneType);
         });
+    });
+
+    // Add keyboard controls (1-4 keys)
+    document.addEventListener('keydown', function(event) {
+        if (gameState.isAnimating) return;
+        
+        // Map keys 1-4 to zones
+        const keyToZone = {
+            '1': 'top-left',
+            '2': 'top-right',
+            '3': 'bottom-left',
+            '4': 'bottom-right'
+        };
+        
+        const zoneType = keyToZone[event.key];
+        if (zoneType) {
+            takeShot(zoneType);
+        }
     });
 
     function takeShot(zoneType) {
