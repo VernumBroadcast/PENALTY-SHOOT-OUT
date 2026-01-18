@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Penalty Shoot Out</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <div class="game-container">
+        <div class="field-container">
+            <img src="Game Backround.png" alt="Game Background" class="background">
+            
+            <div class="goal-area">
+                <div class="goal-frame">
+                    <div class="goal-grid">
+                        <div class="goal-zone" data-zone="top-left">1</div>
+                        <div class="goal-zone" data-zone="top-right">2</div>
+                        <div class="goal-zone" data-zone="bottom-left">3</div>
+                        <div class="goal-zone" data-zone="bottom-right">4</div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="ball-container">
+                <img src="Ball.png" alt="Ball" class="ball" id="ball">
+            </div>
+
+            <div class="keeper-container">
+                <img src="KEEPER NORMAL.png" alt="Keeper" class="keeper" id="keeper">
+            </div>
+
+            <div class="result-overlay" id="resultOverlay">
+                <div class="result-text" id="resultText"></div>
+            </div>
+
+            <div class="wipe-animation" id="wipeAnimation" style="display: none;">
+                <img id="wipeFrame" src="" alt="Wipe Animation">
+            </div>
+
+            <div class="goal-animation" id="goalAnimation" style="display: none;">
+                <img id="goalFrame" src="" alt="Goal Animation">
+            </div>
+        </div>
+
+        <div class="score-board">
+            <div class="score-item">
+                <span class="score-label">Goals:</span>
+                <span class="score-value" id="goals">0</span>
+            </div>
+            <div class="score-item">
+                <span class="score-label">Saves:</span>
+                <span class="score-value" id="saves">0</span>
+            </div>
+        </div>
+    </div>
+
+    <script src="game.js"></script>
+</body>
+</html>
