@@ -62,7 +62,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 gameState.goals++;
             }
             updateScore();
-            resetGame(isSave);
+            resetGame();
         }, animationDelay);
     }
 
@@ -168,46 +168,10 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    function playGoalAnimation() {
-        const goalAnimation = document.getElementById('goalAnimation');
-        const goalFrame = document.getElementById('goalFrame');
-        
-        // Configuration
-        const frameCount = 200; // 000000 to 000199
-        const frameDuration = 33; // ~30fps (1000ms / 30fps ≈ 33ms per frame)
-        const framePath = 'GOAL IMG SEQ/';
-        const framePrefix = 'frame-';
-        
-        goalAnimation.style.display = 'flex';
-        
-        let currentFrame = 0;
-        
-        const animate = () => {
-            if (currentFrame < frameCount) {
-                // Format frame number with leading zeros (e.g., 000000, 000001, ...)
-                const frameNum = String(currentFrame).padStart(6, '0');
-                goalFrame.src = `${framePath}${framePrefix}${frameNum}.png`;
-                currentFrame++;
-                setTimeout(animate, frameDuration);
-            } else {
-                // Animation complete, hide it
-                goalAnimation.style.display = 'none';
-            }
-        };
-        
-        animate();
-    }
-
     function showResult(isSave) {
-        if (isSave) {
-            // Show text for saves
-            resultText.textContent = 'SAVE!';
-            resultText.className = 'result-text save';
-            resultOverlay.classList.add('show');
-        } else {
-            // Play goal animation sequence instead of text
-            playGoalAnimation();
-        }
+        resultText.textContent = isSave ? 'SAVE!' : 'GOAL!!!';
+        resultText.className = 'result-text ' + (isSave ? 'save' : 'goal');
+        resultOverlay.classList.add('show');
     }
 
     function updateScore() {
@@ -215,45 +179,7 @@ document.addEventListener('DOMContentLoaded', function() {
         document.getElementById('saves').textContent = gameState.saves;
     }
 
-    function playWipeAnimation() {
-        const wipeAnimation = document.getElementById('wipeAnimation');
-        const wipeFrame = document.getElementById('wipeFrame');
-        const goalAnimation = document.getElementById('goalAnimation');
-        
-        // Configuration
-        const frameCount = 51; // 00000 to 00050
-        const frameDuration = 33; // ~30fps (1000ms / 30fps ≈ 33ms per frame)
-        const framePath = 'HANDBALL WIPE IMAGE SEQUENCE/';
-        const framePrefix = 'handball wipe_';
-        
-        wipeAnimation.style.display = 'flex';
-        
-        // Hide goal animation 0.5 seconds after wipe starts
-        setTimeout(() => {
-            if (goalAnimation) {
-                goalAnimation.style.display = 'none';
-            }
-        }, 500);
-        
-        let currentFrame = 0;
-        
-        const animate = () => {
-            if (currentFrame <= frameCount) {
-                // Format frame number with leading zeros (e.g., 00000, 00001, ...)
-                const frameNum = String(currentFrame).padStart(5, '0');
-                wipeFrame.src = `${framePath}${framePrefix}${frameNum}.png`;
-                currentFrame++;
-                setTimeout(animate, frameDuration);
-            } else {
-                // Animation complete, hide it
-                wipeAnimation.style.display = 'none';
-            }
-        };
-        
-        animate();
-    }
-
-    function resetGame(isSave) {
+    function resetGame() {
         setTimeout(() => {
             const ballContainer = document.querySelector('.ball-container');
             const ball = document.getElementById('ball');
@@ -266,18 +192,11 @@ document.addEventListener('DOMContentLoaded', function() {
             keeper.src = 'KEEPER NORMAL.png';
             keeper.className = 'keeper';
             
-            // Hide result - less time for saves, more for goals
-            const resultDisplayTime = isSave ? 1000 : 2000; // 1s for saves, 2s for goals
+            // Hide result after 2 seconds
             setTimeout(() => {
                 resultOverlay.classList.remove('show');
                 gameState.isAnimating = false;
-            }, resultDisplayTime);
-            
-            // Play wipe animation - delay 2 seconds longer if it's a goal
-            const wipeDelay = isSave ? 500 : 2500; // 0.5s for saves, 2.5s (2s longer) for goals
-            setTimeout(() => {
-                playWipeAnimation();
-            }, wipeDelay);
+            }, 2000);
         }, 1500);
     }
 });
